@@ -1,4 +1,4 @@
-package com.kakaopay.ryuyungwang.investment;
+package com.kakaopay.ryuyungwang.investment.entity;
 
 import com.kakaopay.ryuyungwang.investment.code.ProductStatusEnum;
 import lombok.Builder;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class ProductEntity {
 
     @Id
-    @Column(name = "productId", insertable = false, nullable = false)
+    @Column(name = "product_id", insertable = false, nullable = false)
     private Integer productId;
 
     @Column(name = "title", nullable = false)

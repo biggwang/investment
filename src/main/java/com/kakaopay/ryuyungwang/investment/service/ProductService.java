@@ -1,6 +1,6 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
-import com.kakaopay.ryuyungwang.investment.ProductEntity;
+import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.dto.ProductResponseDTO;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

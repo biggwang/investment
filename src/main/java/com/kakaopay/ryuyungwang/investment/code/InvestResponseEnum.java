@@ -1,0 +1,17 @@
+package com.kakaopay.ryuyungwang.investment.code;
+
+import lombok.Getter;
+
+@Getter
+public enum InvestResponseEnum {
+
+    SUCCESS("성공적으로 투자되었습니다."),
+    FAIL("투자가 실패하였습니다"),
+    SOLDOUT("목표치 금액을 채웠습니다");
+
+    private final String message;
+
+    InvestResponseEnum(String message) {
+        this.message = message;
+    }
+}

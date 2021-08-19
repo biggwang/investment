@@ -1,0 +1,17 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection) or
+# paste cURL into the file and request will be converted to HTTP Request format.
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+### 앱 로그인 화면 rb_s_mbrdata auth 값 변경하며 테스트 가능
+POST localhost:1000/investment
+Content-Type: application/json;charset=UTF-8
+X-USER-ID: 1234567890
+
+{
+  "productId": 1,
+  "investmentAmount": "1000"
+}

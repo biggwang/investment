@@ -1,6 +1,6 @@
 package com.kakaopay.ryuyungwang.investment.repository;
 
-import com.kakaopay.ryuyungwang.investment.ProductEntity;
+import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.code.ProductStatusEnum;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
