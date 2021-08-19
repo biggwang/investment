@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface InvestmentRepository extends CrudRepository<InvestmentEntity, Integer> {
 
-    List<InvestmentEntity> findByUserIdOrderByCreateAtDesc(String userID);
+    List<InvestmentEntity> findByUserIdOrderByCreateAtDesc(Integer userID);
+
+    boolean existsByProductIdAndUserId(Integer productId, Integer userId);
 }

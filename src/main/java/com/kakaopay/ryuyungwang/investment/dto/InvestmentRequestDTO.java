@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InvestmentRequestDTO {
 
-    private String userId;
+    private Integer userId;
 
     private Integer productId;
 

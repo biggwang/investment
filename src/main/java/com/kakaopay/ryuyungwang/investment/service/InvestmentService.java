@@ -8,7 +8,6 @@ import com.kakaopay.ryuyungwang.investment.entity.InvestmentEntity;
 import com.kakaopay.ryuyungwang.investment.repository.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,16 +16,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InvestmentService {
 
+    private final InvestmentStatusService investmentStatusService;
     private final InvestmentRepository investmentRepository;
 
     public InvestmentResultResponseDTO invest(InvestmentRequestDTO investmentRequestDTO) {
-        // TODO 투자금액 초과 하지 않았는 체크
-        boolean isPossibleInvestment = true;
-        if (!isPossibleInvestment) {
+        if (investmentStatusService.isImPossibleInvestment(investmentRequestDTO.getProductId())) {
             return InvestmentResultResponseDTO.builder()
                     .result(InvestResponseEnum.SOLDOUT.getMessage())
                     .build();
         }
+        // TODO 메소드 위치 확인
+        investmentStatusService.increaseInvestorCount(investmentRequestDTO.getProductId(), investmentRequestDTO.getUserId());
         investmentRepository.save(
                 InvestmentEntity.builder()
                         .productId(investmentRequestDTO.getProductId())
@@ -34,15 +34,13 @@ public class InvestmentService {
                         .investmentAmount(investmentRequestDTO.getInvestmentAmount())
                         .build()
         );
-
-        // TODO 투자자수 count 처리 단, 같은 유저는 안됨
-
+        investmentStatusService.increaseCurrentInvestingAmount(investmentRequestDTO.getProductId(), investmentRequestDTO.getInvestmentAmount());
         return InvestmentResultResponseDTO.builder()
                 .result(InvestResponseEnum.SUCCESS.getMessage())
                 .build();
     }
 
-    public List<InvestmentResponseDTO> getInvestmentList(String userId) {
+    public List<InvestmentResponseDTO> getInvestmentList(Integer userId) {
         return investmentRepository.findByUserIdOrderByCreateAtDesc(userId)
                 .stream()
                 .map(this::toResponseDTO)

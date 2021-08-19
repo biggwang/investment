@@ -20,7 +20,7 @@ public class InvestmentController {
 
     @PostMapping("/investment")
     public InvestmentResultResponseDTO invest(
-            @RequestHeader("X-USER-ID") String userId,
+            @RequestHeader("X-USER-ID") Integer userId,
             @RequestBody InvestmentRequestDTO investmentRequestDTO) {
         // TODO validation check
         investmentRequestDTO.setUserId(userId);
@@ -28,7 +28,7 @@ public class InvestmentController {
     }
 
     @PostMapping("/investment/me")
-    public List<InvestmentResponseDTO> getInvestmentList(@RequestHeader("X-USER-ID") String userId) {
+    public List<InvestmentResponseDTO> getInvestmentList(@RequestHeader("X-USER-ID") Integer userId) {
         // TODO validation check
         return investmentService.getInvestmentList(userId);
     }

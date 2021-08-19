@@ -1,7 +1,7 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
-import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.dto.ProductResponseDTO;
+import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final InvestmentStatusService investmentStatusService;
 
     public List<ProductResponseDTO> getProductList() {
         LocalDateTime now = LocalDateTime.now();
@@ -25,12 +26,13 @@ public class ProductService {
     }
 
     private ProductResponseDTO convertDto(ProductEntity productEntity) {
+        Integer productId = productEntity.getProductId();
         return ProductResponseDTO.builder()
-                .productId(productEntity.getProductId())
+                .productId(productId)
                 .title(productEntity.getTitle())
                 .totalInvestingAmount(productEntity.getTotalInvestingAmount())
-                .currentInvestingAmount(null) // TODO
-                .totalInvestAmount(null)    // TODO
+                .currentInvestingAmount(investmentStatusService.getCurrentInvestingAmount(productId))
+                .totalInvestorCount(investmentStatusService.getTotalInvestorCount(productId))
                 .status(productEntity.getStatus())
                 .startedAt(productEntity.getStartedAt())
                 .finishedAt(productEntity.getFinishedAt())

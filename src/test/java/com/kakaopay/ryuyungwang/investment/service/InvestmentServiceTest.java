@@ -1,7 +1,11 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
 import com.kakaopay.ryuyungwang.investment.InvestmentApplication;
-//import lombok.extern.slf4j.Slf4j;
+import com.kakaopay.ryuyungwang.investment.code.Constant;
+import com.kakaopay.ryuyungwang.investment.dto.InvestmentRequestDTO;
+import com.kakaopay.ryuyungwang.investment.repository.InvestmentRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,13 +17,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
+import static com.kakaopay.ryuyungwang.investment.code.Constant.INVESTOR_COUNT_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 //@Slf4j
 @SpringBootTest(classes = InvestmentApplication.class)
 class InvestmentServiceTest {
 
     @Autowired
+    private InvestmentService investmentService;
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private InvestmentRepository investmentRepository;
     private int total = 0;
+
+    @BeforeEach
+    void setup() {
+        investmentRepository.deleteAll();
+    }
 
     @Test
     public void temp() {
@@ -56,5 +72,18 @@ class InvestmentServiceTest {
         //log.warn("################## result: {}", total);;
         System.out.println("################ normal result:" + total);
         System.out.println("################ redis result:" + redisTemplate.opsForValue().get("total"));
+    }
+
+    @Test
+    @DisplayName("투자하기 테스트")
+    void investment() {
+        InvestmentRequestDTO investmentRequestDTO = new InvestmentRequestDTO();
+        investmentRequestDTO.setProductId(1);
+        investmentRequestDTO.setUserId(123);
+        investmentRequestDTO.setInvestmentAmount(1000);
+        investmentService.invest(investmentRequestDTO);
+        String key = String.format("%s%s", INVESTOR_COUNT_PREFIX, investmentRequestDTO.getProductId());
+        String value = redisTemplate.opsForValue().get(key);
+        assertEquals(value, "1");
     }
 }

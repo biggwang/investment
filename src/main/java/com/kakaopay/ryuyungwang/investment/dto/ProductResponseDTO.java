@@ -21,7 +21,7 @@ public class ProductResponseDTO implements Serializable {
     private String title;
     private Integer totalInvestingAmount;
     private Integer currentInvestingAmount;
-    private Integer totalInvestAmount;
+    private Integer totalInvestorCount;
     private ProductStatusEnum status;
     private LocalDateTime startedAt;
     private LocalDateTime finishedAt;

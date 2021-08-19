@@ -28,7 +28,7 @@ public class InvestmentEntity {
     private Integer productId;
 
     @Column(name = "user_id", nullable = false)
-    private String userId;
+    private Integer userId;
 
     @Column(name = "investment_amount", nullable = false)
     private Integer investmentAmount;
@@ -38,7 +38,7 @@ public class InvestmentEntity {
     private LocalDateTime createAt;
 
     @Builder
-    public InvestmentEntity(Integer productId, String userId, Integer investmentAmount) {
+    public InvestmentEntity(Integer productId, Integer userId, Integer investmentAmount) {
         this.productId = productId;
         this.userId = userId;
         this.investmentAmount = investmentAmount;
