@@ -31,6 +31,8 @@ dependencies {
 //    implementation group: 'com.avides.springboot.springtainer', name: 'springtainer-redis', version: '1.0.0'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
 }
 
 test {

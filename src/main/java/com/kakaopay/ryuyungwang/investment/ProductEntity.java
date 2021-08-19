@@ -1,5 +1,7 @@
 package com.kakaopay.ryuyungwang.investment;
 
+import com.kakaopay.ryuyungwang.investment.code.ProductStatusEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
@@ -18,7 +22,7 @@ public class ProductEntity {
 
     @Id
     @Column(name = "productId", insertable = false, nullable = false)
-    private Long productId;
+    private Integer productId;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -26,14 +30,23 @@ public class ProductEntity {
     @Column(name = "total_investing_amount", nullable = false)
     private Integer totalInvestingAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private ProductStatusEnum status;
 
-    @CreationTimestamp
     @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;
 
-    @CreationTimestamp
     @Column(name = "finished_at", nullable = false)
     private LocalDateTime finishedAt;
+
+    @Builder
+    public ProductEntity(Integer productId, String title, Integer totalInvestingAmount, ProductStatusEnum status, LocalDateTime startedAt, LocalDateTime finishedAt) {
+        this.productId = productId;
+        this.title = title;
+        this.totalInvestingAmount = totalInvestingAmount;
+        this.status = status;
+        this.startedAt = startedAt;
+        this.finishedAt = finishedAt;
+    }
 }

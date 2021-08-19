@@ -1,3 +1,3 @@
-insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (1, '개인신용 포트폴리오1', 2000, 'Recruitment', '2021-08-19 00:00:00', '2021-08-24 00:00:00');
-insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (2, '개인신용 포트폴리오2', 5000, 'Recruitment', '2021-07-19 00:00:00', '2021-08-24 00:00:00');
-insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (3, '개인신용 포트폴리오3', 7000, 'Recruitment', '2021-11-19 00:00:00', '2021-12-24 00:00:00');
+insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (1, '개인신용 포트폴리오1', 2000, 'RECRUITMENT', '2021-08-01 00:00:00', '2021-08-24 00:00:00');
+insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (2, '개인신용 포트폴리오2', 5000, 'RECRUITMENT', '2021-07-22 00:00:00', '2021-08-24 00:00:00');
+insert into product (product_id, title, total_investing_amount, status, started_at, finished_at) values (3, '개인신용 포트폴리오3', 7000, 'DEADLINE', '2021-11-19 00:00:00', '2021-12-24 00:00:00');
