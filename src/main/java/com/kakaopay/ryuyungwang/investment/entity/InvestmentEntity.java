@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -30,6 +32,10 @@ public class InvestmentEntity {
 
     @Column(name = "investment_amount", nullable = false)
     private Integer investmentAmount;
+
+    @CreationTimestamp
+    @Column(name = "create_at", nullable = false)
+    private LocalDateTime createAt;
 
     @Builder
     public InvestmentEntity(Integer productId, String userId, Integer investmentAmount) {
