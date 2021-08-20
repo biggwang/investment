@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * TODO
+ * - validation check
+ */
 @RestController
 @RequiredArgsConstructor
 public class InvestmentController {
@@ -22,14 +26,12 @@ public class InvestmentController {
     public InvestmentResultResponseDTO invest(
             @RequestHeader("X-USER-ID") Integer userId,
             @RequestBody InvestmentRequestDTO investmentRequestDTO) {
-        // TODO validation check
         investmentRequestDTO.setUserId(userId);
         return investmentService.invest(investmentRequestDTO);
     }
 
     @PostMapping("/investment/me")
     public List<InvestmentResponseDTO> getInvestmentList(@RequestHeader("X-USER-ID") Integer userId) {
-        // TODO validation check
         return investmentService.getInvestmentList(userId);
     }
 }
