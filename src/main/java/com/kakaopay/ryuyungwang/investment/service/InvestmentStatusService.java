@@ -5,8 +5,8 @@ import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.exception.ProductException;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -15,6 +15,7 @@ import static com.kakaopay.ryuyungwang.investment.code.Constant.CURRENT_INVESTIN
 import static com.kakaopay.ryuyungwang.investment.code.Constant.INVESTOR_COUNT_PREFIX;
 import static com.kakaopay.ryuyungwang.investment.code.Constant.TOTAL_INVESTING_AMOUNT_PREFIX;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InvestmentStatusService {
@@ -22,12 +23,12 @@ public class InvestmentStatusService {
     private final ProductRepository productRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    // TODO
-    public boolean isImPossibleInvestment(Integer productId, Integer investAmount) {
-        String key = getTotalInvestingAmountKey(productId);
+    public boolean isImPossibleInvestment(Integer productId) {
+        String key = getCurrentInvestingAmountKey(productId);
         String currentInvestingAmountString = redisTemplate.opsForValue().get(key);
         Integer currentInvestingAmount = StringUtils.isEmpty(currentInvestingAmountString) ? 0 : Integer.parseInt(currentInvestingAmountString);
         Integer totalInvestingAmount = getTotalInvestingAmount(productId);
+        log.warn("####### currentInvestingAmount:{}, totalInvestingAmount:{}", currentInvestingAmount, totalInvestingAmount);
         return currentInvestingAmount >= totalInvestingAmount;
     }
 
@@ -42,14 +43,24 @@ public class InvestmentStatusService {
         String hashKey = String.valueOf(userId);
         String hashValue = String.format("%s_%s", key, hashKey);
         redisTemplate.opsForHash().put(key, hashKey, hashValue);
+        setTotalInvestor(productId);
+    }
+
+    private void setTotalInvestor(Integer productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+        Integer totalInvestorCount = getTotalInvestorCount(productId);
+        productEntity.setTotalInvestor(totalInvestorCount);
+        productRepository.save(productEntity);
     }
 
     public Integer getTotalInvestorCount(Integer productId) {
         String key = getTotalInvestorCountKey(productId);
         Integer totalInvestorCount = redisTemplate.opsForHash().entries(key).size();
         if (ObjectUtils.isEmpty(totalInvestorCount)) {
-            // TODO DB 조회 고려
-            return NumberUtils.INTEGER_ZERO;
+            ProductEntity productEntity = productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+            return productEntity.getTotalInvestor();
         }
         return redisTemplate.opsForHash().entries(key).size();
     }
@@ -70,7 +81,15 @@ public class InvestmentStatusService {
 
     public void increaseCurrentInvestingAmount(Integer productId, Integer investAmount) {
         String key = getCurrentInvestingAmountKey(productId);
-        redisTemplate.opsForValue().increment(key, investAmount);
+        Long currentInvestingAmount = redisTemplate.opsForValue().increment(key, investAmount);
+        setCurrentInvestingAmount(productId, currentInvestingAmount);
+    }
+
+    private void setCurrentInvestingAmount(Integer productId, Long currentInvestingAmount) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+        productEntity.setCurrentInvestingAmount(currentInvestingAmount.intValue());
+        productRepository.save(productEntity);
     }
 
     // 현재 상품 모집 금액
@@ -78,8 +97,9 @@ public class InvestmentStatusService {
         String key = getCurrentInvestingAmountKey(productId);
         String value = redisTemplate.opsForValue().get(key);
         if (StringUtils.isEmpty(value)) {
-            // TODO DB 조회 고려
-            return NumberUtils.INTEGER_ZERO;
+            ProductEntity productEntity = productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+            return productEntity.getCurrentInvestingAmount();
         }
         return Integer.parseInt(value);
     }

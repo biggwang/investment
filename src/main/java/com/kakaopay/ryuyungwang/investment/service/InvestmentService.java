@@ -8,7 +8,6 @@ import com.kakaopay.ryuyungwang.investment.entity.InvestmentEntity;
 import com.kakaopay.ryuyungwang.investment.repository.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.RedisSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +30,7 @@ public class InvestmentService {
     // TODO cache 어노테이션 활용하기
     public InvestmentResultResponseDTO invest(InvestmentRequestDTO investmentRequestDTO) {
         try {
-            if (investmentStatusService.isImPossibleInvestment(
-                    investmentRequestDTO.getProductId(), investmentRequestDTO.getInvestmentAmount())) {
+            if (investmentStatusService.isImPossibleInvestment(investmentRequestDTO.getProductId())) {
                 return InvestmentResultResponseDTO.builder()
                         .result(InvestResponseEnum.SOLDOUT.getMessage())
                         .build();

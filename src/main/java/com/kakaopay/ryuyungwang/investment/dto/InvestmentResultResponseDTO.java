@@ -10,13 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InvestmentResultResponseDTO {
 
-    private Integer userId;
+    private Integer userId = 0;
 
-    private Integer productId;
+    private Integer productId = 0;
 
-    private Integer investmentAmount;
+    private Integer investmentAmount = 0;
 
-    private String result;
+    private String result = "";
 
     @Builder
     public InvestmentResultResponseDTO(Integer userId, Integer productId, Integer investmentAmount, String result) {

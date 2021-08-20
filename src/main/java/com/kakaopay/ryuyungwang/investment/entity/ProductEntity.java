@@ -36,6 +36,12 @@ public class ProductEntity {
     @Column(name = "total_investing_amount", nullable = false)
     private Integer totalInvestingAmount;
 
+    @Column(name = "current_investing_amount")
+    private Integer currentInvestingAmount = 0;
+
+    @Column(name = "total_invester")
+    private Integer totalInvestor = 0;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ProductStatusEnum status;
