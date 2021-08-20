@@ -10,10 +10,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InvestmentResultResponseDTO {
 
+    private Integer userId;
+
+    private Integer productId;
+
+    private Integer investmentAmount;
+
     private String result;
 
     @Builder
-    public InvestmentResultResponseDTO(String result) {
+    public InvestmentResultResponseDTO(Integer userId, Integer productId, Integer investmentAmount, String result) {
+        this.userId = userId;
+        this.productId = productId;
+        this.investmentAmount = investmentAmount;
         this.result = result;
     }
 }

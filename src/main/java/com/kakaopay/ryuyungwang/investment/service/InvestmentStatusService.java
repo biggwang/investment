@@ -22,7 +22,8 @@ public class InvestmentStatusService {
     private final ProductRepository productRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public boolean isImPossibleInvestment(Integer productId) {
+    // TODO
+    public boolean isImPossibleInvestment(Integer productId, Integer investAmount) {
         String key = getTotalInvestingAmountKey(productId);
         String currentInvestingAmountString = redisTemplate.opsForValue().get(key);
         Integer currentInvestingAmount = StringUtils.isEmpty(currentInvestingAmountString) ? 0 : Integer.parseInt(currentInvestingAmountString);
@@ -39,7 +40,7 @@ public class InvestmentStatusService {
     public void increaseInvestorCount(Integer productId, Integer userId) {
         String key = getTotalInvestorCountKey(productId);
         String hashKey = String.valueOf(userId);
-        String hashValue = String.format("%s_%s", key, userId);
+        String hashValue = String.format("%s_%s", key, hashKey);
         redisTemplate.opsForHash().put(key, hashKey, hashValue);
     }
 

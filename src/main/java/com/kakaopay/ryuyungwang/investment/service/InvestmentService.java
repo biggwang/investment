@@ -31,7 +31,8 @@ public class InvestmentService {
     // TODO cache 어노테이션 활용하기
     public InvestmentResultResponseDTO invest(InvestmentRequestDTO investmentRequestDTO) {
         try {
-            if (investmentStatusService.isImPossibleInvestment(investmentRequestDTO.getProductId())) {
+            if (investmentStatusService.isImPossibleInvestment(
+                    investmentRequestDTO.getProductId(), investmentRequestDTO.getInvestmentAmount())) {
                 return InvestmentResultResponseDTO.builder()
                         .result(InvestResponseEnum.SOLDOUT.getMessage())
                         .build();
@@ -54,6 +55,9 @@ public class InvestmentService {
                     .build();
         }
         return InvestmentResultResponseDTO.builder()
+                .productId(investmentRequestDTO.getProductId())
+                .userId(investmentRequestDTO.getUserId())
+                .investmentAmount(investmentRequestDTO.getInvestmentAmount())
                 .result(InvestResponseEnum.SUCCESS.getMessage())
                 .build();
     }

@@ -29,3 +29,12 @@ spring:
           charset: utf8
           useUnicode: true
     defer-datasource-initialization: true
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    jdbc: INFO
+    jdbc.sqltiming: INFO
+    jdbc.resultsettable: INFO
