@@ -65,7 +65,7 @@ class InvestmentRepositoryTest {
                 )
         );
         // when
-        List<InvestmentEntity> list = investmentRepository.findByUserIdOrderByCreateAtDesc(randomUserId);
+        List<InvestmentEntity> list = investmentRepository.findByUserIdOrderByInvestmentAtDesc(randomUserId);
         //then
         assertEquals(list.size(), 3);
     }
