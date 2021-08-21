@@ -11,12 +11,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity(name = "investment")
+@Table(indexes = {
+        @Index(name = "idx_investment_01", columnList = "product_id"),
+        @Index(name = "idx_investment_02", columnList = "user_id"),
+        @Index(name = "idx_investment_03", columnList = "create_at"),
+})
 public class InvestmentEntity {
 
     @Id
