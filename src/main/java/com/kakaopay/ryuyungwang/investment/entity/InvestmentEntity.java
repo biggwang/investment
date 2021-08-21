@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Table(indexes = {
         @Index(name = "idx_investment_01", columnList = "product_id"),
         @Index(name = "idx_investment_02", columnList = "user_id"),
-        @Index(name = "idx_investment_03", columnList = "create_at"),
+        @Index(name = "idx_investment_03", columnList = "investment_at"),
 })
 public class InvestmentEntity {
 
@@ -43,8 +43,8 @@ public class InvestmentEntity {
     private Integer investmentAmount;
 
     @CreationTimestamp
-    @Column(name = "create_at", nullable = false)
-    private LocalDateTime createAt;
+    @Column(name = "investment_at", nullable = false)
+    private LocalDateTime investmentAt;
 
     @Builder
     public InvestmentEntity(Integer productId, Integer userId, Integer investmentAmount) {

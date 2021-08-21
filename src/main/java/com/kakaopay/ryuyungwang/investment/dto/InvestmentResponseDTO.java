@@ -18,16 +18,16 @@ public class InvestmentResponseDTO {
     @ApiModelProperty(value = "투자상품 식별 아이디 값", example = "1")
     private Integer productId;
 
-    @ApiModelProperty(value = "투자상품", example = "부동산 포트폴리오")
+    @ApiModelProperty(value = "투자상품명", example = "부동산 포트폴리오")
     private String title;
 
     @ApiModelProperty(value = "총 투자 모집금액", example = "7800000")
     private Integer totalInvestmentAmount;
 
-    @ApiModelProperty(value = "현재 투자 모집금액", example = "24000")
+    @ApiModelProperty(value = "나의 투자 모집금액", example = "24000")
     private Integer investmentAmount;
 
-    @ApiModelProperty(value = "현재 투자자 수", example = "34")
+    @ApiModelProperty(value = "투자일자", example = "2021-08-22 01:23:56")
     private LocalDateTime investmentAt;
 
     @Builder

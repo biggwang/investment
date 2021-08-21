@@ -10,7 +10,6 @@ import com.kakaopay.ryuyungwang.investment.exception.BadRequestException;
 import com.kakaopay.ryuyungwang.investment.service.InvestmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +73,7 @@ public class InvestmentController {
         List<InvestmentResponseDTO> result = investmentService.getInvestmentList(userId);
         return ResponseDTO.<List<InvestmentResponseDTO>>builder()
                 .success(true)
-                .message(InvestResultEnum.SUCCESS.getMessage())
+                .message(InvestResultEnum.READ.getMessage())
                 .data(result)
                 .build();
     }

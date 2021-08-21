@@ -10,8 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 
-@Slf4j //lombok
-@Profile("local") // profile이 local일때만 활성화
+@Slf4j
+@Profile("local")
 @Configuration
 public class EmbeddedRedisConfiguration {
 

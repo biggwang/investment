@@ -29,6 +29,8 @@ public class InvestmentService {
             if (investmentStatusService.isImpossibleInvestment(investmentRequestDTO.getProductId())) {
                 investmentStatusService.changeProductStatus(investmentRequestDTO.getProductId(), ProductStatusEnum.FINISHED);
                 return InvestmentResultResponseDTO.builder()
+                        .productId(investmentRequestDTO.getProductId())
+                        .userId(investmentRequestDTO.getUserId())
                         .investResultEnum(InvestResultEnum.SOLDOUT)
                         .build();
             }
@@ -56,7 +58,7 @@ public class InvestmentService {
     }
 
     public List<InvestmentResponseDTO> getInvestmentList(Integer userId) {
-        return investmentRepository.findByUserIdOrderByCreateAtDesc(userId)
+        return investmentRepository.findByUserIdOrderByInvestmentAtDesc(userId)
                 .stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
@@ -69,7 +71,7 @@ public class InvestmentService {
                 .title(productDTO.getTitle())
                 .totalInvestmentAmount(productDTO.getTotalInvestingAmount())
                 .investmentAmount(investmentEntity.getInvestmentAmount())
-                .investmentAt(investmentEntity.getCreateAt())
+                .investmentAt(investmentEntity.getInvestmentAt())
                 .build();
     }
 }

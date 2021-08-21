@@ -20,7 +20,7 @@ public class ResponseDTO<T> {
     @Builder.Default
     private boolean success = false;
 
-    @ApiModelProperty(value = "요청결과 메세지", example = "성공적으로 투자되었습니다.")
+    @ApiModelProperty(value = "요청결과 메세지", example = "정상처리 되었습니다.")
     @Builder.Default
     private String message = "";
 
