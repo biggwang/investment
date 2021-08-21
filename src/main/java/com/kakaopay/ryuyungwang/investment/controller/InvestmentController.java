@@ -8,6 +8,10 @@ import com.kakaopay.ryuyungwang.investment.dto.InvestmentResultResponseDTO;
 import com.kakaopay.ryuyungwang.investment.dto.ResponseDTO;
 import com.kakaopay.ryuyungwang.investment.exception.BadRequestException;
 import com.kakaopay.ryuyungwang.investment.service.InvestmentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,13 +32,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * TODO
- * - validation check
-*/
 @Slf4j
 @Validated
 @RestController
+@Api(tags = "INVESTMENT")
 @RequiredArgsConstructor
 public class InvestmentController {
 
@@ -42,6 +43,8 @@ public class InvestmentController {
     private static final String USER_ID_INVALID_MESSAGE = "회원 아이디 값은 0보다 커야 합니다.";
 
     @PostMapping("/investment")
+    @ApiOperation(value = "2.투자하기", notes = "총 투자 모집금액이 초과되면 SOLDOUT 되어 투자가 되지 않습니다.")
+    @ApiImplicitParam(name = "X-USER-ID", value = "사용자 식별 아이디 값", example = "123", required = true, dataType = "int", paramType = "header")
     public ResponseDTO<InvestmentResultResponseDTO> invest(
             @RequestHeader("X-USER-ID") @NotNull @Min(value = 1, message = USER_ID_INVALID_MESSAGE) Integer userId,
             @Valid @RequestBody InvestmentRequestDTO investmentRequestDTO,
@@ -64,6 +67,8 @@ public class InvestmentController {
     }
 
     @GetMapping("/investment/me")
+    @ApiOperation(value = "3.나의 투자상품 조회", notes = "내가 투자한 상품 전체 내역을 볼 수 있습니다.")
+    @ApiImplicitParam(name = "X-USER-ID", value = "사용자 식별 아이디 값", example = "123", required = true, dataType = "int", paramType = "header")
     public ResponseDTO<List<InvestmentResponseDTO>> getInvestmentList(
             @RequestHeader("X-USER-ID") @NotNull @Min(value = 1, message = USER_ID_INVALID_MESSAGE) Integer userId) {
         List<InvestmentResponseDTO> result = investmentService.getInvestmentList(userId);
