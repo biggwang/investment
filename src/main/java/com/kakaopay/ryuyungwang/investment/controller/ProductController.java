@@ -1,6 +1,8 @@
 package com.kakaopay.ryuyungwang.investment.controller;
 
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
 import com.kakaopay.ryuyungwang.investment.dto.ProductDTO;
+import com.kakaopay.ryuyungwang.investment.dto.ResponseDTO;
 import com.kakaopay.ryuyungwang.investment.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +21,12 @@ public class ProductController {
 
     @ApiOperation(value = "1.전체 투자 상품 조회", notes = "상품 모집기간내의 상품만 조회 됩니다.")
     @GetMapping("/products")
-    public List<ProductDTO> getProductList() {
-        return productService.getProductList();
+    public ResponseDTO<List<ProductDTO>> getProductList() {
+        List<ProductDTO> productList = productService.getProductList();
+        return ResponseDTO.<List<ProductDTO>>builder()
+                .success(true)
+                .message(InvestResultEnum.SUCCESS.getMessage())
+                .data(productList)
+                .build();
     }
 }

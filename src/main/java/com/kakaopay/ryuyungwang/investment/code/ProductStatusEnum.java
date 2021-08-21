@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ProductStatusEnum {
 
     RECRUITMENT("모집중"),
-    DEADLINE("마감");
+    FINISHED("마감");
 
     private final String description;
 

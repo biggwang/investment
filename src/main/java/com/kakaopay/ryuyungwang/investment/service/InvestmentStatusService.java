@@ -1,18 +1,21 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
 import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
+import com.kakaopay.ryuyungwang.investment.code.ProductStatusEnum;
 import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.exception.ProductException;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import static com.kakaopay.ryuyungwang.investment.code.Constant.CURRENT_INVESTING_AMOUNT_PREFIX;
 import static com.kakaopay.ryuyungwang.investment.code.Constant.INVESTOR_COUNT_PREFIX;
+import static com.kakaopay.ryuyungwang.investment.code.Constant.PROJECT_STATUS_PREFIX;
 import static com.kakaopay.ryuyungwang.investment.code.Constant.TOTAL_INVESTING_AMOUNT_PREFIX;
 
 @Slf4j
@@ -23,7 +26,12 @@ public class InvestmentStatusService {
     private final ProductRepository productRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public boolean isImPossibleInvestment(Integer productId) {
+    public boolean isImpossibleInvestment(Integer productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
+        if (ProductStatusEnum.FINISHED.equals(productEntity.getStatus())) {
+            return true;
+        }
         String key = getCurrentInvestingAmountKey(productId);
         String currentInvestingAmountString = redisTemplate.opsForValue().get(key);
         Integer currentInvestingAmount = StringUtils.isEmpty(currentInvestingAmountString) ? 0 : Integer.parseInt(currentInvestingAmountString);
@@ -37,7 +45,6 @@ public class InvestmentStatusService {
         increaseCurrentInvestingAmount(productId, investAmount);
     }
 
-    // hashTable 형태를 사용한 이유는 table 형태로 관리하여 count를 한꺼번에 조회 하기 위함
     public void increaseInvestorCount(Integer productId, Integer userId) {
         String key = getTotalInvestorCountKey(productId);
         String hashKey = String.valueOf(userId);
@@ -102,6 +109,14 @@ public class InvestmentStatusService {
             return productEntity.getCurrentInvestingAmount();
         }
         return Integer.parseInt(value);
+    }
+
+    @Cacheable(value = "changeProductStatus")
+    public void changeProductStatus(Integer productId, ProductStatusEnum productStatusEnum) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
+        productEntity.setStatus(productStatusEnum);
+        productRepository.save(productEntity);
     }
 
     private String getTotalInvestingAmountKey(Integer productId) {

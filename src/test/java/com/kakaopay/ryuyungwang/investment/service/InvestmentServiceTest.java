@@ -62,7 +62,7 @@ class InvestmentServiceTest {
         assertEquals(totalInvestingAmount, investmentResultResponseDTO.getInvestmentAmount());
     }
 
-    //@Test
+    @Test
     @DisplayName("모집금액보다 투자금액이 많으면 SOLDOUT 처리 되어야 한다.")
     void investFailTest() {
         InvestmentResultResponseDTO resultFirst = invest(1, 123, Integer.MAX_VALUE);
@@ -72,7 +72,6 @@ class InvestmentServiceTest {
     }
 
     @Test
-    //@Rollback(false)
     @DisplayName("동시에 투자하기 테스트")
     void multiInvestTest() throws InterruptedException {
         Random random = new Random();

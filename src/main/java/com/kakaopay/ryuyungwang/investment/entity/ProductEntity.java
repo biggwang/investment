@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@DynamicUpdate
 @NoArgsConstructor
 @Entity(name = "product")
 @Table(indexes = {
@@ -55,8 +57,7 @@ public class ProductEntity {
     private LocalDateTime finishedAt;
 
     @Builder
-    public ProductEntity(Integer productId, String title, Integer totalInvestingAmount, ProductStatusEnum status, LocalDateTime startedAt, LocalDateTime finishedAt) {
-        this.productId = productId;
+    public ProductEntity(String title, Integer totalInvestingAmount, ProductStatusEnum status, LocalDateTime startedAt, LocalDateTime finishedAt) {
         this.title = title;
         this.totalInvestingAmount = totalInvestingAmount;
         this.status = status;

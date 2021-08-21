@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@DynamicUpdate
 @NoArgsConstructor
 @Entity(name = "investment")
 @Table(indexes = {

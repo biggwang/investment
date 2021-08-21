@@ -62,7 +62,6 @@ class ProductRepositoryTest {
 
     private ProductEntity getProductEntity(LocalDateTime start, LocalDateTime end) {
         return ProductEntity.builder()
-                .productId(Integer.parseInt(RandomStringUtils.randomNumeric(2)))
                 .title(RandomStringUtils.randomAlphabetic(10))
                 .totalInvestingAmount(1000)
                 .status(ProductStatusEnum.RECRUITMENT)
