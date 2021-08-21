@@ -1,15 +1,15 @@
 package com.kakaopay.ryuyungwang.investment.exception;
 
-import com.kakaopay.ryuyungwang.investment.code.InvestResponseEnum;
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
 import lombok.Getter;
 
 @Getter
 public class ProductException extends RuntimeException{
 
-    private final InvestResponseEnum investResponseEnum;
+    private final InvestResultEnum investResultEnum;
 
-    public ProductException(InvestResponseEnum investResponseEnum) {
-        super(investResponseEnum.getMessage());
-        this.investResponseEnum = investResponseEnum;
+    public ProductException(InvestResultEnum investResultEnum) {
+        super(investResultEnum.getMessage());
+        this.investResultEnum = investResultEnum;
     }
 }

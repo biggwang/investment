@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponseDTO implements Serializable {
+public class ProductDTO implements Serializable {
 
     private Integer productId;
     private String title;

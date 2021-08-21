@@ -1,9 +1,10 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
-import com.kakaopay.ryuyungwang.investment.code.InvestResponseEnum;
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentRequestDTO;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentResponseDTO;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentResultResponseDTO;
+import com.kakaopay.ryuyungwang.investment.dto.ProductDTO;
 import com.kakaopay.ryuyungwang.investment.entity.InvestmentEntity;
 import com.kakaopay.ryuyungwang.investment.repository.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InvestmentService {
 
+    private final ProductService productService;
     private final InvestmentStatusService investmentStatusService;
     private final InvestmentRepository investmentRepository;
 
@@ -32,7 +34,7 @@ public class InvestmentService {
         try {
             if (investmentStatusService.isImPossibleInvestment(investmentRequestDTO.getProductId())) {
                 return InvestmentResultResponseDTO.builder()
-                        .result(InvestResponseEnum.SOLDOUT.getMessage())
+                        .investResultEnum(InvestResultEnum.SOLDOUT)
                         .build();
             }
             // 투자내역 데이터 영속성은 필요함 캐쉬는 서버 내렸다 올리면 휘발됨..
@@ -49,14 +51,14 @@ public class InvestmentService {
             // TODO redis rollback 처리 및 rdb rollback 되는지 확인
             log.error("failed to invest because {}", ex.getMessage());
             return InvestmentResultResponseDTO.builder()
-                    .result(InvestResponseEnum.FAIL.getMessage())
+                    .investResultEnum(InvestResultEnum.FAIL)
                     .build();
         }
         return InvestmentResultResponseDTO.builder()
                 .productId(investmentRequestDTO.getProductId())
                 .userId(investmentRequestDTO.getUserId())
                 .investmentAmount(investmentRequestDTO.getInvestmentAmount())
-                .result(InvestResponseEnum.SUCCESS.getMessage())
+                .investResultEnum(InvestResultEnum.SUCCESS)
                 .build();
     }
 
@@ -68,10 +70,11 @@ public class InvestmentService {
     }
 
     private InvestmentResponseDTO toResponseDTO(InvestmentEntity investmentEntity) {
+        ProductDTO productDTO = productService.getProduct(investmentEntity.getProductId());
         return InvestmentResponseDTO.builder()
                 .productId(investmentEntity.getProductId())
-                .title(null)
-                .totalInvestmentAmount(null)
+                .title(productDTO.getTitle())
+                .totalInvestmentAmount(productDTO.getTotalInvestingAmount())
                 .investmentAmount(investmentEntity.getInvestmentAmount())
                 .investmentAt(investmentEntity.getCreateAt())
                 .build();

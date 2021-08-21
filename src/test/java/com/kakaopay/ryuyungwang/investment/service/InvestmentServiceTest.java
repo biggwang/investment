@@ -1,7 +1,7 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
 import com.kakaopay.ryuyungwang.investment.InvestmentApplication;
-import com.kakaopay.ryuyungwang.investment.code.InvestResponseEnum;
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentRequestDTO;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentResponseDTO;
 import com.kakaopay.ryuyungwang.investment.dto.InvestmentResultResponseDTO;
@@ -67,8 +67,8 @@ class InvestmentServiceTest {
     void investFailTest() {
         InvestmentResultResponseDTO resultFirst = invest(1, 123, Integer.MAX_VALUE);
         InvestmentResultResponseDTO resultSecond = invest(1, 123, 1000);
-        assertEquals(resultFirst.getResult(), InvestResponseEnum.SUCCESS.getMessage());
-        assertEquals(resultSecond.getResult(), InvestResponseEnum.SOLDOUT.getMessage());
+        assertEquals(resultFirst.getInvestResultEnum().getMessage(), InvestResultEnum.SUCCESS.getMessage());
+        assertEquals(resultSecond.getInvestResultEnum().getMessage(), InvestResultEnum.SOLDOUT.getMessage());
     }
 
     @Test
@@ -90,7 +90,7 @@ class InvestmentServiceTest {
         investmentRequestDTO.setUserId(userId);
         investmentRequestDTO.setInvestmentAmount(investmentAmount);
         InvestmentResultResponseDTO result = investmentService.invest(investmentRequestDTO);
-        log.warn("####### invest message: {}", result.getResult());
+        log.warn("####### invest message: {}", result.getInvestResultEnum().getMessage());
         return result;
     }
 }

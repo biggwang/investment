@@ -1,7 +1,9 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
-import com.kakaopay.ryuyungwang.investment.dto.ProductResponseDTO;
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
+import com.kakaopay.ryuyungwang.investment.dto.ProductDTO;
 import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
+import com.kakaopay.ryuyungwang.investment.exception.ProductException;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final InvestmentStatusService investmentStatusService;
 
-    public List<ProductResponseDTO> getProductList() {
+    public List<ProductDTO> getProductList() {
         LocalDateTime now = LocalDateTime.now();
         return productRepository.findAllByStartedAtLessThanEqualAndFinishedAtGreaterThanEqual(now, now)
                 .stream()
@@ -25,9 +27,15 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private ProductResponseDTO convertDto(ProductEntity productEntity) {
+    public ProductDTO getProduct(Integer productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
+        return convertDto(productEntity);
+    }
+
+    private ProductDTO convertDto(ProductEntity productEntity) {
         Integer productId = productEntity.getProductId();
-        return ProductResponseDTO.builder()
+        return ProductDTO.builder()
                 .productId(productId)
                 .title(productEntity.getTitle())
                 .totalInvestingAmount(productEntity.getTotalInvestingAmount())

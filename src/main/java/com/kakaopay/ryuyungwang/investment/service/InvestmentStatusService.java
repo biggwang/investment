@@ -1,6 +1,6 @@
 package com.kakaopay.ryuyungwang.investment.service;
 
-import com.kakaopay.ryuyungwang.investment.code.InvestResponseEnum;
+import com.kakaopay.ryuyungwang.investment.code.InvestResultEnum;
 import com.kakaopay.ryuyungwang.investment.entity.ProductEntity;
 import com.kakaopay.ryuyungwang.investment.exception.ProductException;
 import com.kakaopay.ryuyungwang.investment.repository.ProductRepository;
@@ -48,7 +48,7 @@ public class InvestmentStatusService {
 
     private void setTotalInvestor(Integer productId) {
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
         Integer totalInvestorCount = getTotalInvestorCount(productId);
         productEntity.setTotalInvestor(totalInvestorCount);
         productRepository.save(productEntity);
@@ -59,7 +59,7 @@ public class InvestmentStatusService {
         Integer totalInvestorCount = redisTemplate.opsForHash().entries(key).size();
         if (ObjectUtils.isEmpty(totalInvestorCount)) {
             ProductEntity productEntity = productRepository.findById(productId)
-                    .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+                    .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
             return productEntity.getTotalInvestor();
         }
         return redisTemplate.opsForHash().entries(key).size();
@@ -73,7 +73,7 @@ public class InvestmentStatusService {
             return Integer.parseInt(value);
         }
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
         Integer totalInvestingAmount = productEntity.getTotalInvestingAmount();
         redisTemplate.opsForValue().set(key, String.valueOf(totalInvestingAmount));
         return totalInvestingAmount;
@@ -87,7 +87,7 @@ public class InvestmentStatusService {
 
     private void setCurrentInvestingAmount(Integer productId, Long currentInvestingAmount) {
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+                .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
         productEntity.setCurrentInvestingAmount(currentInvestingAmount.intValue());
         productRepository.save(productEntity);
     }
@@ -98,7 +98,7 @@ public class InvestmentStatusService {
         String value = redisTemplate.opsForValue().get(key);
         if (StringUtils.isEmpty(value)) {
             ProductEntity productEntity = productRepository.findById(productId)
-                    .orElseThrow(() -> new ProductException(InvestResponseEnum.NOT_EXIST_PRODUCT));
+                    .orElseThrow(() -> new ProductException(InvestResultEnum.NOT_EXIST_PRODUCT));
             return productEntity.getCurrentInvestingAmount();
         }
         return Integer.parseInt(value);
