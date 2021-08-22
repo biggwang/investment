@@ -12,12 +12,12 @@ spring:
         web-allow-others: true
   datasource:
 #    url: jdbc:h2:mem:testdb
-    url: jdbc:mysql://mysql:3306/investment?useSSL=false
-#    useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://mysql:3306/investment?characterEncoding=UTF-8&serverTimezone=UTC&useUnicode=true
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-#    initialization-mode: always
+    sql-script-encoding: UTF-8
+    initialization-mode: always
 #    platform: mysql
   #    driver-class-name: org.h2.Driver
   jpa:
@@ -31,7 +31,7 @@ spring:
       org.hibernate.envers.audit_table_suffix: _history
       hibernate:
         format_sql: true
-        ddl-auto: update
+        ddl-auto: none
         connection:
           charset: utf8
           useUnicode: true
