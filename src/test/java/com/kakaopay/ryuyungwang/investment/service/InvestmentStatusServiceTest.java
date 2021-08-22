@@ -25,7 +25,7 @@ class InvestmentStatusServiceTest {
     @DisplayName("동일한 파라미터로 모집 상품을 상태값을 업데이트 할 때는 캐시처리 하는지 테스트")
     void changeProductStatus() {
         // given
-        Integer productId = 1;
+        Integer productId = 4;
         // when
         investmentStatusService.changeProductStatus(productId, ProductStatusEnum.FINISHED);
         investmentStatusService.changeProductStatus(productId, ProductStatusEnum.FINISHED);

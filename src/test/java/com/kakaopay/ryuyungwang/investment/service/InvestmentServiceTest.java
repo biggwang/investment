@@ -44,12 +44,7 @@ class InvestmentServiceTest {
         investmentRepository.deleteAll();
         redisTemplate.keys(TOTAL_INVESTING_AMOUNT_PREFIX).forEach(key -> redisTemplate.delete(key));
         redisTemplate.keys(CURRENT_INVESTING_AMOUNT_PREFIX).forEach(key -> redisTemplate.delete(key));
-        redisTemplate.keys(INVESTOR_COUNT_PREFIX).forEach(key -> {
-            log.warn("INVESTOR_COUNT_PREFIX 삭제:{}", key);
-            redisTemplate.delete(key);
-        });
-        Set<String> temp = redisTemplate.keys(INVESTOR_COUNT_PREFIX);
-        log.warn("##### temp{}", temp);
+        redisTemplate.keys(INVESTOR_COUNT_PREFIX).forEach(key -> redisTemplate.delete(key));
     }
 
     @Test

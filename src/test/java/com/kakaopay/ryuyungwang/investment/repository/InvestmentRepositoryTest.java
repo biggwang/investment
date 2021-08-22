@@ -21,6 +21,7 @@ class InvestmentRepositoryTest {
 
     @Autowired
     private InvestmentRepository investmentRepository;
+    private final Integer productId = 4;
 
     @BeforeEach
     void setup() {
@@ -32,7 +33,7 @@ class InvestmentRepositoryTest {
     void save() {
         investmentRepository.save(
                 InvestmentEntity.builder()
-                        .productId(1)
+                        .productId(productId)
                         .userId(Integer.parseInt(RandomStringUtils.randomNumeric(5)))
                         .investmentAmount(Integer.parseInt(RandomStringUtils.randomNumeric(5)))
                         .build()
@@ -44,7 +45,7 @@ class InvestmentRepositoryTest {
     void existsByProductIdAndUserId() {
         // given
         Integer randomUserId = Integer.parseInt(RandomStringUtils.randomNumeric(5));
-        InvestmentEntity investmentEntity = getInvestmentEntity(1, randomUserId, 1000);
+        InvestmentEntity investmentEntity = getInvestmentEntity(productId, randomUserId, 1000);
         investmentRepository.save(investmentEntity);
         // when
         boolean result =  investmentRepository.existsByProductIdAndUserId(investmentEntity.getProductId(), randomUserId);
@@ -59,9 +60,9 @@ class InvestmentRepositoryTest {
         Integer randomUserId = Integer.parseInt(RandomStringUtils.randomNumeric(5));
         investmentRepository.saveAll(
                 Arrays.asList(
-                        getInvestmentEntity(1, randomUserId, 1000),
-                        getInvestmentEntity(1, randomUserId, 3000),
-                        getInvestmentEntity(1, randomUserId, 5000)
+                        getInvestmentEntity(productId, randomUserId, 1000),
+                        getInvestmentEntity(productId, randomUserId, 3000),
+                        getInvestmentEntity(productId, randomUserId, 5000)
                 )
         );
         // when

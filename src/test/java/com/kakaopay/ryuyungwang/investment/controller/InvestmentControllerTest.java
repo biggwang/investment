@@ -69,12 +69,13 @@ class InvestmentControllerTest {
     }
 
     private static Stream<Arguments> parametersProvider() {
+        Integer productId = 4;
         return Stream.of(
-                arguments(null, 1, 1000, false),
-                arguments(1, 0, 1000, false),
-                arguments(1, 1, null, false),
-                arguments(1, 1, 0, false),
-                arguments(1, 1, 1000, true)
+                arguments(null, productId, 1000, false),
+                arguments(productId, 0, 1000, false),
+                arguments(productId, 1, null, false),
+                arguments(productId, 1, 0, false),
+                arguments(productId, 1, 1000, true)
         );
     }
 
@@ -95,8 +96,9 @@ class InvestmentControllerTest {
     }
 
     private static Stream<Arguments> getInvestProvider() {
+        Integer productId = 4;
         return Stream.of(
-                arguments(1, true)
+                arguments(productId, true)
         );
     }
 }
