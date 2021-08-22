@@ -18,7 +18,6 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     sql-script-encoding: UTF-8
     initialization-mode: always
-#    platform: mysql
   #    driver-class-name: org.h2.Driver
   jpa:
 #    database-platform: org.hibernate.dialect.H2Dialect

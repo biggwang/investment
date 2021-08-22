@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 
 services:
   investment:
@@ -8,14 +8,21 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - redis
-      - mysql
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   redis:
     image: "redis:alpine"
     hostname: redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   mysql:
     image: mysql:5.7
@@ -23,5 +30,10 @@ services:
       MYSQL_DATABASE: investment
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ROOT_HOST: '%'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
     ports:
       - 3306:3306
