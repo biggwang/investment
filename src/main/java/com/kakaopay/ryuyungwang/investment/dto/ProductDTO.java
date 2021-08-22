@@ -18,12 +18,19 @@ import java.time.LocalDateTime;
 public class ProductDTO implements Serializable {
 
     private Integer productId;
+
     private String title;
+
     private Integer totalInvestingAmount;
+
     private Integer currentInvestingAmount;
+
     private Integer totalInvestorCount;
+
     private ProductStatusEnum status;
+
     private LocalDateTime startedAt;
+
     private LocalDateTime finishedAt;
 
 }

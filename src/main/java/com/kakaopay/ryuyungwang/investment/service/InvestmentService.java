@@ -31,6 +31,7 @@ public class InvestmentService {
                 return InvestmentResultResponseDTO.builder()
                         .productId(investmentRequestDTO.getProductId())
                         .userId(investmentRequestDTO.getUserId())
+                        .investmentAmount(investmentRequestDTO.getInvestmentAmount())
                         .investResultEnum(InvestResultEnum.SOLDOUT)
                         .build();
             }
@@ -43,7 +44,6 @@ public class InvestmentService {
             );
             investmentStatusService.applyStatus(investmentRequestDTO.getProductId(), investmentRequestDTO.getUserId(), investmentRequestDTO.getInvestmentAmount());
         } catch (Exception ex) {
-            // TODO redis rollback 처리 및 rdb rollback 되는지 확인
             log.error("failed to invest because {}", ex.getMessage());
             return InvestmentResultResponseDTO.builder()
                     .investResultEnum(InvestResultEnum.FAIL)

@@ -83,7 +83,7 @@ class InvestmentControllerTest {
     @ParameterizedTest(name = "userId:{1} investmentAmount:{2}")
     public void getInvest(Integer userId, boolean result) throws Exception {
         // when
-        MvcResult mvcResult = mockMvc.perform(get("/investment/me")
+        MvcResult mvcResult = mockMvc.perform(get("/investment")
                 .header("X-USER-ID", userId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();

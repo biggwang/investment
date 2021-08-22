@@ -45,6 +45,7 @@ public class InvestmentStatusService {
         increaseCurrentInvestingAmount(productId, investAmount);
     }
 
+    // 상품 투자자 수 반영
     public void increaseInvestorCount(Integer productId, Integer userId) {
         String key = getTotalInvestorCountKey(productId);
         String hashKey = String.valueOf(userId);
@@ -61,6 +62,7 @@ public class InvestmentStatusService {
         productRepository.save(productEntity);
     }
 
+    // 해당 투자상품에 대한 투자자 수 조회
     public Integer getTotalInvestorCount(Integer productId) {
         String key = getTotalInvestorCountKey(productId);
         Integer totalInvestorCount = redisTemplate.opsForHash().entries(key).size();
@@ -72,7 +74,7 @@ public class InvestmentStatusService {
         return redisTemplate.opsForHash().entries(key).size();
     }
 
-    // 상품 총 모집금액 조회
+    // 투자상품 총 모집금액 조회
     public Integer getTotalInvestingAmount(Integer productId) {
         String key = getTotalInvestingAmountKey(productId);
         String value = redisTemplate.opsForValue().get(key);
@@ -86,6 +88,7 @@ public class InvestmentStatusService {
         return totalInvestingAmount;
     }
 
+    // 해당 투자상품 투자금액 조회
     public void increaseCurrentInvestingAmount(Integer productId, Integer investAmount) {
         String key = getCurrentInvestingAmountKey(productId);
         Long currentInvestingAmount = redisTemplate.opsForValue().increment(key, investAmount);
@@ -99,7 +102,7 @@ public class InvestmentStatusService {
         productRepository.save(productEntity);
     }
 
-    // 현재 상품 모집 금액
+    // 해당 투자상품 모집 금액
     public Integer getCurrentInvestingAmount(Integer productId) {
         String key = getCurrentInvestingAmountKey(productId);
         String value = redisTemplate.opsForValue().get(key);
@@ -111,6 +114,7 @@ public class InvestmentStatusService {
         return Integer.parseInt(value);
     }
 
+    // 투자상품 상태값 변경
     @Cacheable(value = "changeProductStatus")
     public void changeProductStatus(Integer productId, ProductStatusEnum productStatusEnum) {
         ProductEntity productEntity = productRepository.findById(productId)

@@ -20,7 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     @ApiOperation(value = "1.전체 투자 상품 조회", notes = "상품 모집기간내의 상품만 조회 됩니다.")
-    @GetMapping("/products")
+    @GetMapping("/product")
     public ResponseDTO<List<ProductDTO>> getProductList() {
         List<ProductDTO> productList = productService.getProductList();
         return ResponseDTO.<List<ProductDTO>>builder()

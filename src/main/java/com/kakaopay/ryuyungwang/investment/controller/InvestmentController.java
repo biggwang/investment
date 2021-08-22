@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,15 +66,16 @@ public class InvestmentController {
                 .build();
     }
 
-    @GetMapping("/investment/me")
+    @GetMapping("/investment")
     @ApiOperation(value = "3.나의 투자상품 조회", notes = "내가 투자한 상품 전체 내역을 볼 수 있습니다.")
     @ApiImplicitParam(name = "X-USER-ID", value = "사용자 식별 아이디 값", example = "123", required = true, dataType = "int", paramType = "header")
     public ResponseDTO<List<InvestmentResponseDTO>> getInvestmentList(
             @RequestHeader("X-USER-ID") @NotNull @Min(value = 1, message = USER_ID_INVALID_MESSAGE) Integer userId) {
         List<InvestmentResponseDTO> result = investmentService.getInvestmentList(userId);
+        InvestResultEnum investResultEnum = ObjectUtils.isEmpty(result) ? InvestResultEnum.NOT_INVESTMENT : InvestResultEnum.READ;
         return ResponseDTO.<List<InvestmentResponseDTO>>builder()
                 .success(true)
-                .message(InvestResultEnum.READ.getMessage())
+                .message(investResultEnum.getMessage())
                 .data(result)
                 .build();
     }
