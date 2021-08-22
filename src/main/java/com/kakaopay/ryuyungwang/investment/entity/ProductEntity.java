@@ -23,10 +23,6 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @NoArgsConstructor
 @Entity(name = "product")
-@Table(indexes = {
-    @Index(name = "idx_product_01", columnList = "product_id"),
-    @Index(name = "idx_product_02", columnList = "started_at, finished_at")
-})
 public class ProductEntity {
 
     @Id

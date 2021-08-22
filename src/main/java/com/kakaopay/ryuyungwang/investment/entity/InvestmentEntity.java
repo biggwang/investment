@@ -21,11 +21,6 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @NoArgsConstructor
 @Entity(name = "investment")
-@Table(indexes = {
-        @Index(name = "idx_investment_01", columnList = "product_id"),
-        @Index(name = "idx_investment_02", columnList = "user_id"),
-        @Index(name = "idx_investment_03", columnList = "investment_at"),
-})
 public class InvestmentEntity {
 
     @Id
