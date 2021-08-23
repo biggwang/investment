@@ -16,7 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
@@ -38,6 +37,7 @@ class InvestmentServiceTest {
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
     private InvestmentRepository investmentRepository;
+    private final Integer productId = 4;
 
     @BeforeEach
     void setup() {
@@ -50,7 +50,7 @@ class InvestmentServiceTest {
     @Test
     @DisplayName("투자하기 테스트")
     void investTest() {
-        InvestmentResultResponseDTO investmentResultResponseDTO = invest(1, 123, 1000);
+        InvestmentResultResponseDTO investmentResultResponseDTO = invest(productId, 123, 1000);
         Integer totalInvestorCount = investmentStatusService.getTotalInvestorCount(investmentResultResponseDTO.getProductId());
         Integer totalInvestingAmount = investmentStatusService.getCurrentInvestingAmount(investmentResultResponseDTO.getProductId());
         assertEquals(totalInvestorCount, 1);
@@ -60,8 +60,8 @@ class InvestmentServiceTest {
     @Test
     @DisplayName("모집금액보다 투자금액이 많으면 SOLDOUT 처리 되어야 한다.")
     void investFailTest() {
-        InvestmentResultResponseDTO resultFirst = invest(1, 123, Integer.MAX_VALUE);
-        InvestmentResultResponseDTO resultSecond = invest(1, 123, 1000);
+        InvestmentResultResponseDTO resultFirst = invest(productId, 123, Integer.MAX_VALUE);
+        InvestmentResultResponseDTO resultSecond = invest(productId, 123, 1000);
         assertEquals(resultFirst.getInvestResultEnum().getMessage(), InvestResultEnum.SUCCESS.getMessage());
         assertEquals(resultSecond.getInvestResultEnum().getMessage(), InvestResultEnum.SOLDOUT.getMessage());
     }
@@ -72,7 +72,7 @@ class InvestmentServiceTest {
         Random random = new Random();
         ExecutorService service = Executors.newFixedThreadPool(10);
         IntStream.rangeClosed(1, 10).boxed().parallel().forEach(i -> {
-            invest(1, 1, random.nextInt(5));
+            invest(productId, 1, random.nextInt(5));
         });
         List<InvestmentResponseDTO> list = investmentService.getInvestmentList(1);
         log.warn("### result:{}", list);

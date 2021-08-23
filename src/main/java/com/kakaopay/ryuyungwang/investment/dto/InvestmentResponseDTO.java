@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class InvestmentResponseDTO {
 
-    @ApiModelProperty(value = "투자상품 식별 아이디 값", example = "1")
+    @ApiModelProperty(value = "투자상품 식별 아이디 값", example = "4")
     private Integer productId;
 
     @ApiModelProperty(value = "투자상품명", example = "부동산 포트폴리오")
